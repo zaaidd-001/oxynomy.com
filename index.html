@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxynomy - Free Fire Guild</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f1a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 87, 34, 0.5);
+            box-shadow: 0 0 10px rgba(255, 87, 34, 0.8), 0 0 20px rgba(255, 87, 34, 0.6);
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.2;
+            }
+            25% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-50px) translateX(100px);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translateY(-150px) translateX(-50px);
+                opacity: 0.8;
+            }
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, rgba(36, 11, 54, 0.8) 0%, rgba(195, 55, 55, 0.8) 100%);
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            border-radius: 10px;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            background: rgba(20, 20, 35, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 87, 34, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #ff5722;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff5722, transparent);
+        }
+
+        /* Livestream Section */
+        .livestream-container {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .livestream-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ff5722;
+            gap: 1rem;
+        }
+
+        .livestream-placeholder i {
+            font-size: 5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* Guild Test Form */
+        .test-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ddd;
+        }
+
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 87, 34, 0.5);
+            background-color: rgba(20, 20, 35, 0.8);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff5722;
+            box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+        }
+
+        button[type="submit"] {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #ff5722, #ff9800);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.5);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 87, 34, 0.7);
+        }
+
+        /* Guild Test Results */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 87, 34, 0.3);
+        }
+
+        .results-table th {
+            background-color: rgba(255, 87, 34, 0.2);
+            color: #ff9800;
+            font-weight: 700;
+        }
+
+        .results-table tr:hover {
+            background-color: rgba(255, 87, 34, 0.1);
+        }
+
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-align: center;
+            display: inline-block;
+            min-width: 80px;
+        }
+
+        .status.passed {
+            background-color: rgba(46, 213, 115, 0.2);
+            color: #2ed573;
+            border: 1px solid rgba(46, 213, 115, 0.5);
+        }
+
+        .status.failed {
+            background-color: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            border: 1px solid rgba(255, 71, 87, 0.5);
+        }
+
+        /* Social Media */
+        .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon i {
+            font-size: 2.5rem;
+            color: #ff5722;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+        }
+
+        .social-icon:hover i {
+            color: #ff9800;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, rgba(36, 11, 54, 0.8) 0%, rgba(195, 55, 55, 0.8) 100%);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        /* Admin Login Button */
+        .admin-login {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: rgba(20, 20, 35, 0.8);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 87, 34, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-login:hover {
+            background-color: rgba(255, 87, 34, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .social-media {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Admin Panel Specific Styles (Login Form) */
+        .admin-section {
+            display: none;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 5rem auto;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animated-menu {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.menu-item').forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('animated-menu');
+        }, index * 300);
+    });
+});
+</script>
+
+    <!-- Animated Background -->
+    <div class="background-animation" id="animatedBg"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/api/placeholder/60/60" alt="Oxynomy Logo" id="guild-logo">
+                <h1 id="guild-name">OXYNOMY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#livestream">Live Stream</a></li>
+                    <li><a href="#guild-test">Guild Test</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Live Stream Section -->
+        <section id="livestream">
+            <h2>LIVE STREAM</h2>
+            <div class="livestream-container">
+                <div class="livestream-placeholder" id="stream-content">
+                    <i class="fas fa-video"></i>
+                    <h3>No Active Stream</h3>
+                    <p>Check back later or follow our social media for stream announcements</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guild Test Section -->
+        <section id="guild-test">
+            <h2>GUILD TEST APPLICATION</h2>
+            <p>Want to join Oxynomy? Fill out the form below to take our guild test!</p>
+            <form class="test-form" id="guild-test-form">
+                <div class="form-group">
+                    <label for="uid">Free Fire UID</label>
+                    <input type="text" id="uid" name="uid" placeholder="Enter your Free Fire UID" required>
+                </div>
+                <div class="form-group">
+                    <label for="ign">In-Game Name (IGN)</label>
+                    <input type="text" id="ign" name="ign" placeholder="Enter your IGN" required>
+                </div>
+                <div class="form-group">
+                    <label for="level">Level</label>
+                    <input type="number" id="level" name="level" placeholder="Your current Free Fire level" required>
+                </div>
+                <div class="form-group">
+                    <label for="instagram">Instagram Handle</label>
+                    <input type="text" id="instagram" name="instagram" placeholder="Your Instagram username" required>
+                </div>
+                <button type="submit">Submit Application</button>
+            </form>
+        </section>
+
+        <!-- Guild Test Results Section -->
+        <section id="results">
+            <h2>TEST RESULTS</h2>
+            <p>Here are the most recent applicants and their test results:</p>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>IGN</th>
+                        <th>UID</th>
+                        <th>Level</th>
+                        <th>Test Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <!-- Example entries - this will be populated dynamically -->
+                    <tr>
+                        <td>FireKing92</td>
+                        <td>156789023</td>
+                        <td>65</td>
+                        <td>2025-04-01</td>
+                        <td><span class="status passed">PASSED</span></td>
+                    </tr>
+                    <tr>
+                        <td>SniperElite</td>
+                        <td>234567891</td>
+                        <td>50</td>
+                        <td>2025-04-02</td>
+                        <td><span class="status failed">FAILED</span></td>
+                    </tr>
+                    <tr>
+                        <td>HeadshotPro</td>
+                        <td>345678912</td>
+                        <td>72</td>
+                        <td>2025-04-02</td>
+                        <td><span class="status passed">PASSED</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Social Media Section -->
+        <section id="contact">
+            <h2>CONNECT WITH US</h2>
+            <div class="social-media">
+                <a href="#" class="social-icon" id="instagram-link">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="#" class="social-icon" id="youtube-link">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                </a>
+                <a href="#" class="social-icon" id="discord-link">
+                    <i class="fab fa-discord"></i>
+                    <span>Discord</span>
+                </a>
+                <a href="#" class="social-icon" id="twitch-link">
+                    <i class="fab fa-twitch"></i>
+                    <span>Twitch</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Oxynomy Free Fire Guild. All rights reserved.</p>
+    </footer>
+
+    <!-- Admin Login Button -->
+    <a href="#" class="admin-login" id="admin-login-btn">
+        <i class="fas fa-lock"></i>
+        Admin
+    </a>
+
+    <!-- Admin Login Form (Hidden by default) -->
+    <div class="admin-section" id="admin-login-section">
+        <form class="login-form test-form">
+            <div class="form-group">
+                <label for="admin-username">Username</label>
+                <input type="text" id="admin-username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Password</label>
+                <input type="password" id="admin-password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Animated Background
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgElement = document.getElementById('animatedBg');
+            const numParticles = 30;
+            
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size
+                const size = Math.random() * 120 + 20;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 8}s`;
+                
+                bgElement.appendChild(particle);
+            }
+            
+            // Admin login button
+            const adminBtn = document.getElementById('admin-login-btn');
+            const adminSection = document.getElementById('admin-login-section');
+            
+            adminBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (adminSection.style.display === 'block') {
+                    adminSection.style.display = 'none';
+                } else {
+                    adminSection.style.display = 'block';
+                }
+            });
+            
+            // Form submission (just for demo - this would connect to a backend in production)
+            const guildTestForm = document.getElementById('guild-test-form');
+            guildTestForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Your application has been submitted! Our admins will review it soon.');
+            });
+        });
+    </script>
+
+<a href="admin-panel-continued.html">Go to Admin Panel</a>
+</body>
+</html>
