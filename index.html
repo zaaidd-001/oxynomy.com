@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OXYNOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #121212;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        .header-section img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .header-section h1 {
+            color: #00a9f1;
+            font-size: 36px;
+            margin: 0;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #121212;
+            padding: 10px 0;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #0061F2;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        header a:hover {
+            background-color: #00a9f1;
+        }
+
+        .container {
+            padding-top: 120px;
+            margin: 20px;
+        }
+
+        section {
+            margin-bottom: 50px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #1e1e1e;
+        }
+
+        h2 {
+            color: #00a9f1;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .livestream iframe {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+        }
+
+        .social-media-icons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .social-media-icons a {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .test-results {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            min-height: 100px;
+        }
+
+        .player {
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            animation: pulse 2s infinite ease-in-out;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .player.pass {
+            background-color: #2ecc71;
+            color: #121212;
+        }
+
+        .player.fail {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            margin-left: 10px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <img src="your-logo.png" alt="Website Logo">
+    <h1>OXYNOMY</h1>
+</div>
+
+<header id="download-popup">
+    <a href="https://ga-fs.primexop.com/3172/androidBuilds/oxynomyV1.apk" id="download-link">Download Esports App</a>
+</header>
+
+<div class="container">
+    <section class="livestream">
+        <h2>Livestream</h2>
+        <iframe src="https://www.youtube.com/embed/oxynomyguild" frameborder="0" allowfullscreen></iframe>
+    </section>
+
+    <section>
+        <h2>How to Join Our Guild</h2>
+        <p>Join us on Instagram to learn how to become part of our guild:</p>
+        <a href="https://www.instagram.com/channel/AbaDfoWMoJPAbz8V/" target="_blank">Instagram Guild Join</a>
+    </section>
+
+    <section>
+        <h2>Guild Test Results <span class="live-dot"></span></h2>
+        <div class="test-results" id="test-results"></div>
+    </section>
+
+    <section>
+        <h2>Follow Us</h2>
+        <div class="social-media-icons">
+            <a href="https://www.instagram.com/oxynomy.guild?igsh=anN3cDIzOXFldXRq" target="_blank">Instagram</a>
+            <a href="https://discord.gg/wUFzFWNp" target="_blank">Discord</a>
+            <a href="https://youtube.com/@oxynomyguild?si=W9s1PhJwrQ5m5jqa" target="_blank">YouTube</a>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2025 OXYNOMY. All rights reserved.</p>
+</footer>
+
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById('download-popup').style.display = 'block';
+        }, 2000);
+
+        showNextPlayer();
+    };
+
+    const players = [
+        { name: "Player123", result: "pass" },
+        { name: "Player456", result: "fail" },
+        { name: "Player789", result: "pass" },
+        { name: "Player321", result: "fail" },
+        { name: "PlayerGhost", result: "pass" },
+        { name: "PlayerNova", result: "fail" }
+    ];
+
+    let index = 0;
+    const container = document.getElementById("test-results");
+
+    function showNextPlayer() {
+        container.innerHTML = "";
+
+        const player = players[index];
+        const div = document.createElement("div");
+        div.className = `player ${player.result}`;
+        div.textContent = `${player.name} - ${player.result.toUpperCase()}`;
+        div.style.opacity = 1;
+
+        container.appendChild(div);
+
+        index = (index + 1) % players.length;
+    }
+
+    setInterval(showNextPlayer, 2500);
+</script>
+
+</body>
+</html>
